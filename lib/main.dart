@@ -1,373 +1,379 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const NovaApp());
+  runApp(const FootballApp());
 }
 
-class NovaApp extends StatelessWidget {
-  const NovaApp({super.key});
+// ==========================================
+// TAHAP 1: MODEL DATA
+// ==========================================
+class MatchSchedule {
+  final String homeTeam;
+  final String awayTeam;
+  final String matchTime;
+  final String league;
+
+  MatchSchedule({
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.matchTime,
+    required this.league,
+  });
+}
+
+class PlayerProfile {
+  final String name;
+  final String position;
+  final String club;
+  final int jerseyNumber;
+  final String photoUrl;
+  final String biography;
+
+  PlayerProfile({
+    required this.name,
+    required this.position,
+    required this.club,
+    required this.jerseyNumber,
+    required this.photoUrl,
+    required this.biography,
+  });
+}
+
+// ==========================================
+// TAHAP 2: APLIKASI UTAMA & TAMPILAN UTAMA
+// ==========================================
+class FootballApp extends StatelessWidget {
+  const FootballApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'NOVA App',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0B1020),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7C5CFC),
-          brightness: Brightness.dark,
+      title: 'Bola Info App',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF10B981),
         ),
       ),
-      home: const HomePage(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+  List<MatchSchedule> get dummyMatches => [
+    MatchSchedule(
+      homeTeam: 'Real Madrid',
+      awayTeam: 'Barcelona',
+      matchTime: '23:00 - Sabtu',
+      league: 'El Clásico - La Liga',
+    ),
+    MatchSchedule(
+      homeTeam: 'Man City',
+      awayTeam: 'Arsenal',
+      matchTime: '02:00 - Minggu',
+      league: 'Premier League',
+    ),
+  ];
 
-class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
-
-  final List<String> titles = [
-    'Discover',
-    'Explore',
-    'Favorites',
-    'Profile',
+  List<PlayerProfile> get dummyPlayers => [
+    PlayerProfile(
+      name: 'Cristiano Ronaldo🐐',
+      position: 'Striker',
+      club: 'Al Nassr',
+      jerseyNumber: 7,
+      photoUrl: 'assets/Goat.jpg',
+      biography: 'Cristiano Ronaldo the best player at Al Nassr.',
+    ),
+    PlayerProfile(
+      name: 'Jude Bellingham',
+      position: 'Gelandang',
+      club: 'Real Madrid',
+      jerseyNumber: 5,
+      photoUrl: 'assets/Bellingham.jpg',
+      biography: 'Jude Victor William Bellingham Real Madrid.',
+    ),
+    PlayerProfile(
+      name: 'Lamine Yamal',
+      position: 'Penyerang',
+      club: 'Barcelona',
+      jerseyNumber: 19,
+      photoUrl: 'assets/yamal.jpg',
+      biography: 'Lamine Yamal Nasraoui Ebana Barcelona.',
+    ),
+    PlayerProfile(
+      name: 'Erling Haaland',
+      position: 'Striker',
+      club: 'Man City',
+      jerseyNumber: 9,
+      photoUrl: 'assets/Haaland.jpg',
+      biography: 'Erling Braut Haaland Manchester City.',
+    ),
+    PlayerProfile(
+      name: 'Kevin De Bruyne',
+      position: 'gelandang',
+      club: 'Manchaster City',
+      jerseyNumber: 17,
+      photoUrl: 'assets/kdb_napoli.jpg',
+      biography: 'Kevin De Bruyne Player Napoli'
+    )
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0B1020),
         title: const Text(
-          'NOVA',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 4,
-          ),
+          '⚽ Bola Info',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-          const SizedBox(width: 8),
-        ],
+        backgroundColor: const Color(0xFF1E293B),
+        elevation: 0,
       ),
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'YOUR SPACE',
-                style: TextStyle(
-                  color: Colors.blue.shade200,
-                  letterSpacing: 3,
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Jadwal Pertandingan',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                'Hello, Explorer.',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 8),
-
-              Text(
-                'Discover something extraordinary today.',
-                style: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontSize: 14,
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF6246EA),
-                      Color(0xFF2675E8),
-                      Color(0xFF102C55),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+            ),
+            const SizedBox(height: 12),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: dummyMatches.length,
+              itemBuilder: (context, index) {
+                final match = dummyMatches[index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white12),
                   ),
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome,
-                      size: 36,
-                      color: Colors.white,
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    const Text(
-                      'A NEW\nEXPERIENCE',
-                      style: TextStyle(
-                        fontSize: 28,
-                        height: 1.2,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
+                  child: Column(
+                    children: [
+                      Text(
+                        match.league,
+                        style: const TextStyle(
+                          color: Color(0xFF10B981),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    const Text(
-                      'Your journey starts here.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
-
-                    const SizedBox(height: 22),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = 1;
-                        });
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Welcome to Explore!'),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF30206F),
-                      ),
-                      child: const Text('Get Started'),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Quick Access',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'VIEW ALL',
-                    style: TextStyle(
-                      color: Colors.blue.shade200,
-                      fontSize: 11,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: menuCard(
-                      icon: Icons.explore_outlined,
-                      title: 'Explore',
-                      subtitle: 'Find new things',
-                      color: const Color(0xFF7C5CFC),
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 1;
-                        });
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(width: 14),
-
-                  Expanded(
-                    child: menuCard(
-                      icon: Icons.favorite_border,
-                      title: 'Favorites',
-                      subtitle: 'Your collection',
-                      color: const Color(0xFF29B6F6),
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = 2;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF151D32),
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.07),
-                  ),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.bolt,
-                      color: Color(0xFF70C7FF),
-                      size: 32,
-                    ),
-
-                    SizedBox(width: 14),
-
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            'Made for you',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                          Expanded(
+                            child: Text(
+                              match.homeTeam,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF334155),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              match.matchTime,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              match.awayTeam,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 24),
+
+            const Text(
+              'Pemain Populer',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 170,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: dummyPlayers.length,
+                itemBuilder: (context, index) {
+                  final player = dummyPlayers[index];
+                  // TAHAP 3: Menggunakan GestureDetector agar kartu pemain bisa diklik
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlayerDetailScreen(player: player),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 140,
+                      margin: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E293B),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white12),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // KODE PERBAIKAN agar muncul FOTO
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: const Color(0xFF334155),
+                            backgroundImage: player.photoUrl.startsWith('assets/')
+                                ? AssetImage(player.photoUrl) as ImageProvider
+                                : NetworkImage(player.photoUrl),
+                          ),
+                          const SizedBox(height: 10),
                           Text(
-                            'A little space to inspire your day.',
-                            style: TextStyle(
-                              color: Colors.white60,
+                            player.name,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            player.club,
+                            style: const TextStyle(
+                              color: Colors.grey,
                               fontSize: 12,
                             ),
                           ),
                         ],
                       ),
                     ),
-
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 15,
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-
-              const SizedBox(height: 24),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: const Color(0xFF11182A),
-        indicatorColor: const Color(0xFF343064),
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-
-          if (index != 0) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${titles[index]} selected'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
-          }
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
-            label: 'Explore',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Saved',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
+}
 
-  Widget menuCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(22),
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: const Color(0xFF151D32),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.07),
-          ),
-        ),
+// ==========================================
+// TAHAP 3: HALAMAN DETAIL PROFIL PEMAIN
+// ==========================================
+class PlayerDetailScreen extends StatelessWidget {
+  final PlayerProfile player;
+
+  const PlayerDetailScreen({super.key, required this.player});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(player.name),
+        backgroundColor: const Color(0xFF1E293B),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, color: color, size: 30),
-            const SizedBox(height: 22),
+            const SizedBox(height: 20),
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: const Color(0xFF1E293B),
+              backgroundImage: player.photoUrl.startsWith('assets/')
+                  ? AssetImage(player.photoUrl) as ImageProvider
+                  : NetworkImage(player.photoUrl),
+            ),
+            const SizedBox(height: 16),
             Text(
-              title,
+              player.name,
               style: const TextStyle(
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
-                fontSize: 15,
               ),
             ),
             const SizedBox(height: 6),
             Text(
-              subtitle,
+              '${player.position} • ${player.club}', // Diperbaiki agar tidak terpotong
               style: const TextStyle(
-                color: Colors.white60,
-                fontSize: 11,
+                fontSize: 16,
+                color: Color(0xFF10B981),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E293B),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Biografi Singkat',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    player.biography,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

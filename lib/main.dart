@@ -10,12 +10,16 @@ void main() {
 class MatchSchedule {
   final String homeTeam;
   final String awayTeam;
+  final String homeLogo; // Path/URL Club tim tuan rumah
+  final String awayLogo; // Path/URL Club tim tamu
   final String matchTime;
   final String league;
 
   MatchSchedule({
     required this.homeTeam,
     required this.awayTeam,
+    required this.homeLogo,
+    required this.awayLogo,
     required this.matchTime,
     required this.league,
   });
@@ -67,14 +71,26 @@ class HomeScreen extends StatelessWidget {
   List<MatchSchedule> get dummyMatches => [
     MatchSchedule(
       homeTeam: 'Real Madrid',
-      awayTeam: 'Barcelona',
+      awayTeam: 'Barcalona',
+      homeLogo: 'assets/Club/Real_Madrid.png',
+      awayLogo: 'assets/Club/Barcalona.png',
       matchTime: '23:00 - Sabtu',
       league: 'El Clásico - La Liga',
     ),
     MatchSchedule(
       homeTeam: 'Man City',
       awayTeam: 'Arsenal',
+      homeLogo: 'assets/Club/Manchester_City.png',
+      awayLogo: 'assets/Club/Arsenal.png',
       matchTime: '02:00 - Minggu',
+      league: 'Premier League',
+    ),
+    MatchSchedule(
+      homeTeam: 'Chelsea',
+      awayTeam: 'Man United',
+      homeLogo: 'assets/Club/Chelsea.png',
+      awayLogo: 'assets/Club/Manchester_United.png',
+      matchTime: '19:30 - Sabtu',
       league: 'Premier League',
     ),
   ];
@@ -85,23 +101,31 @@ class HomeScreen extends StatelessWidget {
       position: 'Striker',
       club: 'Al Nassr',
       jerseyNumber: 7,
-      photoUrl: 'assets/Goat.jpg',
+      photoUrl: 'assets/Player/Goat.jpg',
       biography: 'Cristiano Ronaldo the best player at Al Nassr.',
+    ),
+    PlayerProfile(
+      name: 'Lionel Messi',
+      position: 'Gelandang Penyerang',
+      club: 'Inter miami',
+      jerseyNumber: 10,
+      photoUrl: 'assets/Player/Messi.jpg',
+      biography: 'Lionel Messi Inter Miami.',
     ),
     PlayerProfile(
       name: 'Jude Bellingham',
       position: 'Gelandang',
       club: 'Real Madrid',
       jerseyNumber: 5,
-      photoUrl: 'assets/Bellingham.jpg',
+      photoUrl: 'assets/Player/Bellingham.jpg',
       biography: 'Jude Victor William Bellingham Real Madrid.',
     ),
     PlayerProfile(
       name: 'Lamine Yamal',
       position: 'Penyerang',
-      club: 'Barcelona',
+      club: 'Barcalona',
       jerseyNumber: 19,
-      photoUrl: 'assets/yamal.jpg',
+      photoUrl: 'assets/Player/yamal.jpg',
       biography: 'Lamine Yamal Nasraoui Ebana Barcelona.',
     ),
     PlayerProfile(
@@ -109,7 +133,7 @@ class HomeScreen extends StatelessWidget {
       position: 'Striker',
       club: 'Man City',
       jerseyNumber: 9,
-      photoUrl: 'assets/Haaland.jpg',
+      photoUrl: 'assets/Player/Haaland.jpg',
       biography: 'Erling Braut Haaland Manchester City.',
     ),
     PlayerProfile(
@@ -117,8 +141,24 @@ class HomeScreen extends StatelessWidget {
       position: 'gelandang',
       club: 'Manchaster City',
       jerseyNumber: 17,
-      photoUrl: 'assets/kdb_napoli.jpg',
+      photoUrl: 'assets/Player/kdb_napoli.jpg',
       biography: 'Kevin De Bruyne Player Napoli'
+    ),
+    PlayerProfile(
+        name: 'Kylian Mbappe',
+        position: 'penyerang',
+        club: 'Real Madrid',
+        jerseyNumber: 10,
+        photoUrl: 'assets/Player/Mbappe.jpg',
+        biography: 'Kylian Mbappe Player Real Madrid'
+    ),
+    PlayerProfile(
+        name: 'Pedri',
+        position: 'gelandang',
+        club: 'Barcalona',
+        jerseyNumber: 8,
+        photoUrl: 'assets/Player/Pedri.jpg',
+        biography: 'Pedri Player Barcalona'
     )
   ];
 
@@ -127,7 +167,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '⚽ Bola Info',
+          '⚽ Football Info',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF1E293B),
@@ -174,16 +214,28 @@ class HomeScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          // --- TIM HOME (Kiri) ---
                           Expanded(
-                            child: Text(
-                              match.homeTeam,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              children: [
+                                // Widget Logo Home
+                                match.homeLogo.startsWith('assets/')
+                                    ? Image.asset(match.homeLogo, width: 36, height: 36, errorBuilder: (_, __, ___) => const Icon(Icons.shield, size: 36))
+                                    : Image.network(match.homeLogo, width: 36, height: 36, errorBuilder: (_, __, ___) => const Icon(Icons.shield, size: 36)),
+                                const SizedBox(height: 6),
+                                Text(
+                                  match.homeTeam,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+
+                          // --- WAKTU PERTANDINGAN (Tengah) ---
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
@@ -201,18 +253,29 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+
+                          // --- TIM AWAY (Kanan) ---
                           Expanded(
-                            child: Text(
-                              match.awayTeam,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              children: [
+                                // Widget Logo Away
+                                match.awayLogo.startsWith('assets/')
+                                    ? Image.asset(match.awayLogo, width: 36, height: 36, errorBuilder: (_, __, ___) => const Icon(Icons.shield, size: 36))
+                                    : Image.network(match.awayLogo, width: 36, height: 36, errorBuilder: (_, __, ___) => const Icon(Icons.shield, size: 36)),
+                                const SizedBox(height: 6),
+                                Text(
+                                  match.awayTeam,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 );
